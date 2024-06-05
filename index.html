@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <title>Connections</title>
+    <style>
+        body {
+            background-color: skyblue;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        table {
+            background-color: black;
+            width: 50%;
+            height: 65%;
+            margin: 10% 25% 0 25%;
+        }
+
+        td {
+            background-color: white;
+            padding: 25px 5px;
+            text-align: center;
+            border: 5px outset white;
+            width: 25%;
+            height: 25%;
+        }
+
+        div#button {
+            background-color: red;
+            color: white;
+            padding: 10px 0;
+            width: 10%;
+            text-align: center;
+            margin: 5% 45%;
+            border-radius: 15px;
+            border: 5px outset red;
+        }
+
+        h2#lives {
+            text-align: center;
+            color: white;
+            text-shadow: -1px -1px black, -1px 1px black, 1px -1px black, 1px 1px black;
+            margin: 5% 0 0 0;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr id="row1">
+            <td id="1">1
+            <td id="2">2
+            <td id="3">3
+            <td id="4">4
+        </tr>
+        <tr id="row2">
+            <td id="5">1
+            <td id="6">2
+            <td id="7">3
+            <td id="8">4
+        </tr>
+        <tr id="row3">
+            <td id="9">1
+            <td id="10">2
+            <td id="11">3
+            <td id="12">4
+        </tr>
+        <tr id="row4">
+            <td id="13">1
+            <td id="14">2
+            <td id="15">3
+            <td id="16">4
+        </tr>
+    </table>
+
+    <h2 id="lives">
+    </h2>
+
+    <div id="button">
+        Submit
+    </div>
+
+    <script>
+
+        let selected = [];
+
+        let row = 0;
+
+        let lives = 4;
+
+        document.getElementById("lives").innerHTML = "Lives: " + String(lives);
+
+        let yellowWords = ["the simpsons", "canary", "lemon", "daisy"];
+        let greenWords = ["luigi", "grass", "tree", "leaf"];
+        let blueWords = ["ocean", "sky", "water", "blue jay"];
+        let purpleWords = ["LSU", "violet", "purple", "grapes"];
+
+        let yellowConnection = "all yellow";
+        let greenConnection = "all green";
+        let blueConnection = "all blue";
+        let purpleConnection = "all purple";
+
+        let words = [];
+
+        for (let i = 0; i < 4; i++) {
+            let word = {};
+            word.value = yellowWords[i];
+            word.color = "yellow";
+            words.push(word);
+        }
+
+        for (let i = 4; i < 8; i++) {
+            let word = {};
+            word.value = greenWords[i - 4];
+            word.color = "green";
+            words.push(word);
+        }
+
+        for (let i = 8; i < 12; i++) {
+            let word = {};
+            word.value = blueWords[i - 8];
+            word.color = "blue";
+            words.push(word);
+        }
+
+        for (let i = 12; i < 16; i++) {
+            let word = {};
+            word.value = purpleWords[i - 12];
+            word.color = "purple";
+            words.push(word);
+        }
+
+
+        /*
+        let words = [{ value: "red wings", color: "red" }, { value: "firetruck", color: "red" }, { value: "strawberry", color: "red" }, { value: "mario", color: "red" },
+        { value: "sky", color: "blue" }, { value: "ocean", color: "blue" }, { value: "blue jay", color: "blue" }, { value: "blue bird", color: "blue" },
+        { value: "violet", color: "purple" }, { value: "LSU", color: "purple" }, { value: "purple", color: "purple" }, { value: "grapes", color: "purple" },
+        { value: "leaves", color: "green" }, { value: "grass", color: "green" }, { value: "trees", color: "green" }, { value: "luigi", color: "green" }];
+        */
+
+        for (let i = 0; i < 16; i++) {
+            words[i].index = (Math.random() * 100);
+        }
+
+        words = words.sort(function (a, b) {
+            return a.index - b.index;
+        });
+
+        for (let i = 1; i <= 16; i++) {
+            let cell = document.getElementById(String(i));
+            cell.innerHTML = words[i - 1].value;
+            cell.onclick = (event) => {
+                if (cell.style.background == "lightgray") {
+                    // being unselected
+                    cell.style.background = "white";
+                    cell.style.border = "5px outset white";
+                    // remove word from list of selecte words
+                    for (let j = 0; j < selected.length; j++) {
+                        if (selected[j].value == words[Number(cell.id) - 1].value) {
+                            let temp = selected[j];
+                            selected[j] = selected[selected.length - 1];
+                            selected[selected.length - 1] = temp;
+                            selected.pop();
+                        }
+                    }
+                } else {
+                    if (selected.length < 4) {
+                        // being selected
+                        cell.style.background = "lightgray";
+                        cell.style.border = "5px inset lightgray";
+                        // add word to list of selected words
+                        selected.push(words[Number(cell.id) - 1]);
+                    }
+                }
+            }
+        }
+
+        document.getElementById("button").onclick = (event) => {
+
+            if (selected.length == 4) {
+
+                let yellow = 0;
+                let green = 0;
+                let blue = 0;
+                let purple = 0;
+
+                for (let i = 0; i < 4; i++) {
+                    if (selected[i].color == "yellow") {
+                        yellow++;
+                    }
+                    if (selected[i].color == "blue") {
+                        blue++;
+                    }
+                    if (selected[i].color == "purple") {
+                        purple++;
+                    }
+                    if (selected[i].color == "green") {
+                        green++;
+                    }
+                }
+
+                if (green == 3 || yellow == 3 || purple == 3 || blue == 3) {
+                    alert("One away...");
+                    selected = [];
+                    for (let i = row * 4 + 1; i <= 16; i++) {
+                        let cell = document.getElementById(String(i));
+                        cell.innerHTML = words[i - 1].value;
+                        cell.style.background = "white";
+                        cell.style.border = "5px outset white";
+                    }
+                    lives--;
+                    document.getElementById("lives").innerHTML = "Lives: " + String(lives);
+                } else {
+
+                    if (yellow == 4) {
+                        fill("yellow");
+                    } else {
+
+                        if (blue == 4) {
+                            fill("blue");
+                        } else {
+
+                            if (purple == 4) {
+                                fill("purple");
+                            } else {
+
+                                if (green == 4) {
+                                    fill("green");
+                                } else {
+
+                                    alert("Wrong!");
+                                    lives--;
+                                    document.getElementById("lives").innerHTML = "Lives: " + String(lives);
+
+                                    selected = [];
+                                    for (let i = row * 4 + 1; i <= 16; i++) {
+                                        let cell = document.getElementById(String(i));
+                                        cell.innerHTML = words[i - 1].value;
+                                        cell.style.background = "white";
+                                        cell.style.border = "5px outset white";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            function fill(color) {
+                for (let x = 0; x < 4; x++) {
+                    for (let y = (row * 4) + x; y < words.length; y++) {
+                        if (words[y].color == color) {
+                            let temp = words[y];
+                            words[y] = words[(row * 4) + x];
+                            words[(row * 4) + x] = temp;
+                            break;
+                        }
+                    }
+                }
+
+
+                for (let i = row * 4 + 1; i <= 16; i++) {
+                    let cell = document.getElementById(String(i));
+                    cell.innerHTML = words[i - 1].value;
+                    cell.style.background = "white";
+                    cell.style.border = "5px outset white";
+                }
+
+
+
+                let connection = [];
+                let answers = [];
+                let answerString = "";
+
+                if (color == "yellow") {
+                    answers = yellowWords;
+                    connection = yellowConnection;
+                }
+                if (color == "blue") {
+                    answers = blueWords;
+                    connection = blueConnection;
+                }
+                if (color == "purple") {
+                    answers = purpleWords;
+                    connection = purpleConnection;
+                }
+                if (color == "green") {
+                    answers = greenWords;
+                    connection = greenConnection;
+                }
+
+                for (let i = 0; i < 4; i++) {
+                    answerString += answers[i] + " ";
+                }
+
+
+                document.getElementById("row" + String(row + 1)).innerHTML = "<td colspan=4>" + connection + "<br>" + answerString + "</td>";
+                document.getElementById("row" + String(row + 1)).children[0].style.background = color;
+                document.getElementById("row" + String(row + 1)).children[0].style.border = "5px outset " + color;
+                if (color != "yellow") {
+                    document.getElementById("row" + String(row + 1)).children[0].style.color = "white";
+                }
+                /*
+                for (let i = 1; i <= 4; i++) {
+                    let index = row * 4 + i;
+                    let cell = document.getElementById(String(index));
+                    cell.style.background = color;
+                    cell.style.border = "5px outset " + color;
+                    if (color != "yellow") {
+                        cell.style.color = "white";
+                    }
+                    cell.onclick = null;
+                }
+                */
+
+
+
+                selected = [];
+                row++;
+            }
+
+
+        }
+
+    </script>
+</body>
+
+</html>

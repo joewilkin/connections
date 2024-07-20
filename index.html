@@ -200,6 +200,7 @@
 
                 if (green == 3 || yellow == 3 || purple == 3 || blue == 3) {
                     alert("One away...");
+                    /*
                     selected = [];
                     for (let i = row * 4 + 1; i <= 16; i++) {
                         let cell = document.getElementById(String(i));
@@ -207,8 +208,9 @@
                         cell.style.background = "white";
                         cell.style.border = "5px outset white";
                     }
+                    */
                     attempts++;
-                    document.getElementById("lives").innerHTML = "Lives: " + String(lives);
+                    document.getElementById("attempts").innerHTML = "Attampts Used: " + String(attempts);
                 } else {
 
                     if (yellow == 4) {

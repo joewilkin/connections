@@ -46,7 +46,7 @@
             border-radius: 50vh;
         }
 
-        h2#attempts {
+        h2#misses {
             font-weight: bold;
             text-align: center;
             color: black;
@@ -102,7 +102,7 @@
         </tr>
     </table>
 
-    <h2 id="attempts">
+    <h2 id="misses">
     </h2>
 
     <div id="button">
@@ -117,7 +117,7 @@
 
         let attempts = 0;
 
-        document.getElementById("attempts").innerHTML = "Attempts Used: " + String(attempts);
+        document.getElementById("misses").innerHTML = "Misses: " + String(attempts);
 
         let yellowWords = ["Nail", "Crush", "Kill", "Slay"];
         let greenWords = ["Bolt", "Dip", "Split", "Roll"];
@@ -235,7 +235,7 @@
                     }
                     */
                     attempts++;
-                    document.getElementById("attempts").innerHTML = "Attempts Used: " + String(attempts);
+                    document.getElementById("misses").innerHTML = "Misses: " + String(attempts);
                 } else {
 
                     if (yellow == 4) {
@@ -256,7 +256,7 @@
 
                                     alert("Wrong!");
                                     attempts++;
-                                    document.getElementById("attempts").innerHTML = "Attempts Used: " + String(attempts);
+                                    document.getElementById("misses").innerHTML = "Misses: " + String(attempts);
                                     /*
                                     selected = [];
                                     for (let i = row * 4 + 1; i <= 16; i++) {
